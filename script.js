@@ -10,6 +10,7 @@ const randomNumber = function () {
   function guessNumber() {
     let num = Math.floor(Math.random() * 100) + 1;
     let answer;
+    let count = 10;
 
     console.log(num);
 
@@ -19,10 +20,10 @@ const randomNumber = function () {
 
     function check() {
       if (answer > num) {
-        alert("Загаданное число меньше");
+        alert("Загаданное число меньше, осталось попыток: " + count);
         question();
       } else if (answer < num) {
-        alert("Загаданное число больше");
+        alert("Загаданное число больше, осталось попыток: " + count);
         question();
       } else if (isNumber(answer) === false) {
         alert("Введи число!");
@@ -31,13 +32,34 @@ const randomNumber = function () {
     }
 
     function question() {
+      let tryAgain;
       answer = prompt("Угадай число от 1 до 100");
-      if (answer == null) {
-        alert("Игра окончена");
-      } else if (Number(answer) === num) {
-        confirm("Поздравляю, Вы угадали!!!");
-      } else if (answer !== num) {
-        check();
+      --count;
+
+      if (count == 0) {
+        tryAgain = confirm("Попытки закончились, хотите сыграть еще?");
+
+        if (tryAgain === true) {
+          guessNumber();
+        } else {
+          confirm("С вами было приятно играть!");
+        }
+
+      } else {
+        if (answer == null) {
+          alert("Игра окончена");
+        } else if (Number(answer) === num) {
+          tryAgain = confirm("Поздравляю, Вы угадали!!! Хотели бы сыграть еще?");
+
+          if (tryAgain === true) {
+            guessNumber();
+          } else {
+            confirm("С вами было приятно играть!");
+          }
+
+        } else if (answer !== num) {
+          check();
+        }
       }
     }
     question();
